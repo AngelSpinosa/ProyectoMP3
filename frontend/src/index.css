@@ -1,0 +1,18 @@
+body, html, #root {
+  margin: 0;
+}
+
+#root {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.Div_padre{
+  background-color:#5E548C ;
+  width: 200%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
