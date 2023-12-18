@@ -1,18 +1,89 @@
-body, html, #root {
+body, html, #Root {
   margin: 0;
 }
 
-#root {
+#Root {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 .Div_padre{
   background-color:#5E548C ;
-  width: 200%;
+  width: 200hv;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+#Logo{
+  width: 8%;
+  height: 8%;
+  margin-right: 350px;
+}
+#Opciones{
+  padding-top: -10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+h2{
+  color: #F7F9F9;
+  font-size: 45px;
+  font-family:Arial, Helvetica, sans-serif;
+  margin-bottom: -15px;
+}
+p{
+  color: #F7F9F9;
+  font-size: 20px;
+  font-family:Arial, Helvetica, sans-serif;
+}
+#Boton_agregar{
+  background-color: #4CB963;
+  color: #F7F9F9;
+  border-radius: 20px;
+  width: 130px;
+  height: 50px;
+  font-size: 20px;
+  font-family:Arial, Helvetica, sans-serif;
+  border: 2.5px solid #000000; /* Añade un borde de 2px de ancho y color negro */  margin-top: 20px;
+  margin-bottom: 13px;
+}
+.Botones_AS{
+  background-color: #4CB963;
+  color: #F7F9F9;
+  border-radius: 40px;
+  width: 80px;
+  height: 80px;
+  font-size: 20px;
+  font-family:Arial, Helvetica, sans-serif;
+  border: 2.5px solid #000000; /* Añade un borde de 2px de ancho y color negro */
+  margin-top: 20px;
+}
+#Boton_pausa{
+  background-color: #4CB963;
+  color: #F7F9F9;
+  border-radius: 60px;
+  width: 120px;
+  height: 120px;
+  font-size: 20px;
+  font-family:Arial, Helvetica, sans-serif;
+  border: 2.5px solid #000000; /* Añade un borde de 2px de ancho y color negro */
+  margin-left: 15px;
+  margin-right: 15px;
+  margin-top: 20px;
+}
+progress{
+  width: 60%; /* Ajusta el ancho de la barra de progreso según tus preferencias */
+  height: 18px; /* Ajusta la altura de la barra de progreso según tus preferencias */
+  margin-top: 10px; /* Ajusta el margen superior según tus preferencias */
+  margin-bottom: 10px;
+  background-color: #F7F9F9; /* Cambia el color de fondo de la barra de progreso no rellenada */
+  background-color: #4CB963; /* Cambia el color de la barra de progreso rellenada */
+}
+img{
+  width: 40%;
+  height: 40%;
+  margin-top: 30px;
+  margin-bottom: 25px;
 }

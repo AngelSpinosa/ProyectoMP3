@@ -10,21 +10,23 @@ function App() {
   return (
     <> 
       <div id='Root' className='Div_padre'>
-        <img src="" alt="" />Logo app
-        <button>Agregar</button>
-        <img src="" alt=""/>
+        <div id ='Opciones' className='Div_opciones'>
+          <img src="/Fluctus.svg" alt="Logo Fluctus" id='Logo' />
+          <button id='Boton_agregar'>Agregar</button>
+        </div>
+        
+        <img src="/PinkFloyd.jpg" alt="The Dark Side Of The Moon"/>
         <h2>Nombre de la canción</h2>
         <p>Artista X</p>
-        <progress value="10" max="100"></progress>
+        <progress value="50" max="100"></progress>
 
         <div className='Div_botones'>
-          <button>Anterior</button>
-          <button>PAUSA</button>
-          <button>Siguiente</button>
+          <button className='Botones_AS'>Anterior</button>
+          <button id='Boton_pausa'>PAUSA</button>
+          <button className='Botones_AS'>Siguiente</button>
         </div>
 
       </div>
-
     </>
   )
 }
