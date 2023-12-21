@@ -1,27 +1,39 @@
 package mx.uv;
 
-
+import mx.uv.Controller.DAO;
 import static spark.Spark.*;
-import java.util.HashMap;
 import  com.google.gson.*;
 
-import java.io.IOException;
+public class App {
+    static Gson gson = new Gson();
+    public static void main(String[] args) {
+        //fuente:https://gist.github.com/saeidzebardast/e375b7d17be3e0f4dddf
+        options("/*",(request,response)->{
+            String accessControlRequestHeaders=request.headers("Access-Control-Request-Headers");
+            if(accessControlRequestHeaders!=null){
+                response.header("Access-Control-Allow-Headers",accessControlRequestHeaders);
+            }
+            String accessControlRequestMethod=request.headers("Access-Control-Request-Method");
+            if(accessControlRequestMethod!=null){
+                response.header("Access-Control-Allow-Methods",accessControlRequestMethod);
+                }
+            return "OK";
+        });
+        post("/canciones", (request, response) -> {
+            // Obtener información de la solicitud y crear una nueva canción
+            String payload = request.body();
+            Song newSong = gson.fromJson(payload, Song.class);
 
-import javazoom.jl.decoder.Bitstream;
-import javazoom.jl.decoder.JavaLayerException;
-import javazoom.jl.player.advanced.AdvancedPlayer;
-import javazoom.jl.player.advanced.PlaybackEvent;
-import javazoom.jl.player.advanced.PlaybackListener;
+            // Insertar la nueva canción en la base de datos
+            boolean success = DAO.insertSong(newSong);
 
-public class App 
-{
-public static void main(String[] args) {
-            // Crear una instancia de la canción
-            Song song = new Song("Song Title", "Artist Name", "path/to/song.mp3");
+            // Crear y devolver una respuesta
+            JsonObject respuesta = new JsonObject();
+            respuesta.addProperty("msj", success);
+            return respuesta;
+        });
 
-            // Imprimir información de la canción
-            song.printInfo();
-
-            // Resto de la lógica para la reproducción de MP3
+        // ... (agregar más rutas según sea necesario)
     }
 }
+
