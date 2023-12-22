@@ -115,3 +115,20 @@ img{
   font-size: 20px;
   cursor: pointer;
 }
+
+.ContenedorCancion{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.Div_botones{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}

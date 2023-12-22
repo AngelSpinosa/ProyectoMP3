@@ -36,4 +36,3 @@ public class App {
         // ... (agregar más rutas según sea necesario)
     }
 }
-

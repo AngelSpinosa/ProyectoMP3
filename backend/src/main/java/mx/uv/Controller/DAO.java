@@ -62,5 +62,3 @@ public class DAO {
 
     // Otros métodos según sea necesario...
 }
-
-
