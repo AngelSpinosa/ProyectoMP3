@@ -58,27 +58,29 @@ function App() {
         </div>
 
         {selectedSong && (
-          <div className='ContenedorCancion'>
-            <img src={selectedSong.cover} alt={selectedSong.title} />
-            <h2>{selectedSong.title}</h2>
-            <p>{selectedSong.artist}</p>
-            <progress
-              value="50"
-              max="100"
-              onChange={handleProgressBarChange}>
+          <>
+            <div id='Cancion' className='ContenedorCancion'>
+              <img src={selectedSong.cover} alt={selectedSong.title} />
+              <h2>{selectedSong.title}</h2>
+              <p>{selectedSong.artist}</p>
+              <progress
+                value="50"
+                max="100"
+                onChange={handleProgressBarChange}>
               </progress>
-            <div className='Div_botones'>
-              <button onClick={handlePrev} className='Botones_AS'>
-                <img src="/Last_Song_Button.svg" alt="Anterior" />
-              </button>
-              <button id='Boton_pausa' onClick={handlePlayPause}>
-                <img src="/Pause_button.svg" alt="Pausa" />
-              </button>
-              <button onClick={handleNext} className='Botones_AS'>
-                <img src="/Next_Song_Button.svg" alt="Siguiente" />
-              </button>
             </div>
-          </div>
+            <div id='BotonesPlay' className='Div_botones'>
+                <button onClick={handlePrev} className='Botones_AS'>
+                  <img src="/Last_Song_Button.svg" alt="Anterior" />
+                </button>
+                <button id='Boton_pausa' onClick={handlePlayPause}>
+                  <img src="/Pause_button.svg" alt="Pausa" />
+                </button>
+                <button onClick={handleNext} className='Botones_AS'>
+                  <img src="/Next_Song_Button.svg" alt="Siguiente" />
+                </button>
+            </div>
+          </>
         )}
 
         {showModal && (
