@@ -6,6 +6,22 @@ function App() {
   const [showModal, setShowModal] = useState(false);
   const [songs, setSongs] = useState([]);
   const [selectedSong, setSelectedSong] = useState(null);
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    const audioPlayer = document.getElementById('audioPlayer');
+
+    const updateProgress = () => {
+      const newProgress = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+      setProgress(newProgress);
+    };
+
+    audioPlayer.addEventListener('timeupdate', updateProgress);
+
+    return () => {
+      audioPlayer.removeEventListener('timeupdate', updateProgress);
+    };
+  }, [selectedSong]);
 
   useEffect(() => {
     loadSongs();
@@ -32,20 +48,53 @@ function App() {
   };
 
   const handlePlayPause = () => {
-    // Implementa la lógica para reproducir/pausar la canción seleccionada
+    const audioPlayer = document.getElementById('audioPlayer');
+    if (audioPlayer.paused) {
+      audioPlayer.play();
+    } else {
+      audioPlayer.pause();
+    }
   };
 
   const handleNext = () => {
-    // Implementa la lógica para reproducir la siguiente canción de la lista
+    const currentIndex = songs.findIndex(song => song.filePath === selectedSong.filePath);
+  
+    if (currentIndex !== -1 && currentIndex < songs.length - 1) {
+      const nextSong = songs[currentIndex + 1];
+      setSelectedSong(nextSong);
+    } else if (songs.length > 0) {
+      // Si estás al final de la lista, vuelve a la primera canción
+      setSelectedSong(songs[0]);
+    }
   };
+  
 
   const handlePrev = () => {
-    // Implementa la lógica para reproducir la canción anterior de la lista
+    const currentIndex = songs.findIndex(song => song.filePath === selectedSong.filePath);
+  
+    if (currentIndex !== -1 && currentIndex > 0) {
+      const prevSong = songs[currentIndex - 1];
+      setSelectedSong(prevSong);
+    } else if (songs.length > 0) {
+      // Si estás al principio de la lista, ve a la última canción
+      setSelectedSong(songs[songs.length - 1]);
+    }
   };
+  
 
   const handleProgressBarChange = (e) => {
-    // Implementa la lógica para cambiar la posición de reproducción de la canción
+    const progressBar = e.target;
+    const newTime = (selectedSong.duration / 100) * progressBar.value;
+  
+    // Actualiza la posición de reproducción de la canción
+    selectedSong.audio.currentTime = newTime;
+  
+    // Además, si la canción no está reproduciendo, puedes iniciar la reproducción
+    if (selectedSong.audio.paused) {
+      selectedSong.audio.play();
+    }
   };
+  
 
   return (
     <>
@@ -63,11 +112,14 @@ function App() {
               <img src={selectedSong.cover} alt={selectedSong.title} />
               <h2>{selectedSong.title}</h2>
               <p>{selectedSong.artist}</p>
-              <progress
-                value="50"
-                max="100"
-                onChange={handleProgressBarChange}>
-              </progress>
+              <audio
+                id='AudioPlayer'
+                controls
+                onTimeUpdate={(e) => setProgress((e.target.currentTime / e.target.duration) * 100)}
+              >
+                <source src={selectedSong.filePath} type="audio/mp3" />
+                Tu navegador no soporta el elemento de audio.
+              </audio>
             </div>
             <div id='BotonesPlay' className='Div_botones'>
                 <button onClick={handlePrev} className='Botones_AS'>

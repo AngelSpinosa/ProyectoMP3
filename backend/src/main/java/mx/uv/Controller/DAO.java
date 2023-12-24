@@ -47,16 +47,16 @@ public class DAO {
             stm = conn.prepareStatement(sql);
             stm.setString(1, song.getTitle());
             stm.setString(2, song.getArtist());
-            stm.setString(3, song.getCover());
-            stm.setString(4, song.getFilePath());
+            stm.setString(3, "/images/" + song.getCover()); // Ajusta según tu estructura de carpetas
+            stm.setString(4, "/mp3/" + song.getFilePath());
 
             return stm.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            // Opcional: Si decides añadir un método close en la clase Conexion, puedes llamarlo aquí.
+            Conexion.close(stm);
+            Conexion.close(conn);        
         }
-
         return false;
     }
 

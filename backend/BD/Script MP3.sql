@@ -11,6 +11,6 @@ CREATE TABLE Canciones (
 
 insert into Canciones (nombre, artista, caratula, archivo_mp3) 
 values 
-    ('The Great Gig in the Sky', 'Pink Floyd', 'ruta_caratula1.jpg', 'ruta_cancion1.mp3'),
-    ('Blue World', 'Mac Miller', 'ruta_caratula2.jpg', 'ruta_cancion2.mp3'),
-    ('POWER', 'Kanye West', 'ruta_caratula3.jpg', 'ruta_cancion3.mp3');
+    ('The Great Gig in the Sky', 'Pink Floyd', '/images/TDSOTM.jpg', '/mp3/The Great Gig In The Sky.mp3'),
+    ('Blue World', 'Mac Miller', '/images/Circles.jpg', '/mp3/Blue World.mp3'),
+    ('POWER', 'Kanye West', '/images/My Beautiful Dark Twisted Fantasy.jpg', '/mp3/ruta_cancion3.mp3');
