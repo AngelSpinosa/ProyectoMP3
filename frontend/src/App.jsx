@@ -12,15 +12,19 @@ function App() {
     const audioPlayer = document.getElementById('audioPlayer');
 
     const updateProgress = () => {
-      const newProgress = (audioPlayer.currentTime / audioPlayer.duration) * 100;
-      setProgress(newProgress);
+      if (audioPlayer) {
+        const newProgress = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+        setProgress(newProgress);
+      }
     };
 
-    audioPlayer.addEventListener('timeupdate', updateProgress);
+    if (audioPlayer) {
+      audioPlayer.addEventListener('timeupdate', updateProgress);
 
-    return () => {
-      audioPlayer.removeEventListener('timeupdate', updateProgress);
-    };
+      return () => {
+        audioPlayer.removeEventListener('timeupdate', updateProgress);
+      };
+    }
   }, [selectedSong]);
 
   useEffect(() => {
@@ -94,6 +98,22 @@ function App() {
       selectedSong.audio.play();
     }
   };
+
+  const handleAddSong = async (files) => {
+    try {
+      const formData = new FormData();
+      formData.append('song', files[0]);
+
+      // Puedes agregar más campos al formData si es necesario
+
+      await axios.post('http://localhost:4567/agregar-cancion', formData);
+
+      // Recarga la lista de canciones después de agregar una nueva
+      loadSongs();
+    } catch (error) {
+      console.error('Error al agregar la canción', error);
+    }
+  };
   
 
   return (
@@ -112,25 +132,30 @@ function App() {
               <img src={selectedSong.cover} alt={selectedSong.title} />
               <h2>{selectedSong.title}</h2>
               <p>{selectedSong.artist}</p>
+              <progress
+                value={progress}  // Utiliza el estado progress para reflejar el progreso
+                max="100"
+                onClick={handleProgressBarChange}
+              />
               <audio
                 id='AudioPlayer'
-                controls
                 onTimeUpdate={(e) => setProgress((e.target.currentTime / e.target.duration) * 100)}
+                onEnded={handleNext}  // Invoca handleNext cuando la canción actual ha terminado
               >
                 <source src={selectedSong.filePath} type="audio/mp3" />
                 Tu navegador no soporta el elemento de audio.
               </audio>
             </div>
             <div id='BotonesPlay' className='Div_botones'>
-                <button onClick={handlePrev} className='Botones_AS'>
-                  <img src="/Last_Song_Button.svg" alt="Anterior" />
-                </button>
-                <button id='Boton_pausa' onClick={handlePlayPause}>
-                  <img src="/Pause_button.svg" alt="Pausa" />
-                </button>
-                <button onClick={handleNext} className='Botones_AS'>
-                  <img src="/Next_Song_Button.svg" alt="Siguiente" />
-                </button>
+              <button onClick={handlePrev} className='Botones_AS'>
+                <img src="/Last_Song_Button.svg" alt="Anterior" />
+              </button>
+              <button id='Boton_pausa' onClick={handlePlayPause}>
+                <img src="/Pause_button.svg" alt="Pausa" />
+              </button>
+              <button onClick={handleNext} className='Botones_AS'>
+                <img src="/Next_Song_Button.svg" alt="Siguiente" />
+              </button>
             </div>
           </>
         )}
