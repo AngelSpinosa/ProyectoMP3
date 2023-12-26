@@ -7,6 +7,12 @@ function App() {
   const [songs, setSongs] = useState([]);
   const [selectedSong, setSelectedSong] = useState(null);
   const [progress, setProgress] = useState(0);
+  const [newSongInfo, setNewSongInfo] = useState({
+    name: '',
+    artist: '',
+    audioFile: null,
+    coverImage: null,
+  });
 
   useEffect(() => {
     const audioPlayer = document.getElementById('audioPlayer');
@@ -99,7 +105,34 @@ function App() {
     }
   };
 
-  const handleAddSong = async (files) => {
+  const handleAddSong = (files) => {
+    const audioFile = files[0];
+    setNewSongInfo((prevInfo) => ({ ...prevInfo, audioFile }));
+  };
+
+  const handleAddSongToServer = async () => {
+    try {
+      const formData = new FormData();
+      formData.append('name', newSongInfo.name);
+      formData.append('artist', newSongInfo.artist);
+      formData.append('audio', newSongInfo.audioFile);
+      formData.append('coverImage', newSongInfo.coverImage);
+  
+      await axios.post('http://localhost:4567/canciones', formData);
+  
+      // Después de agregar la canción, puedes recargar la lista de canciones
+      loadSongs();
+  
+      // También puedes cerrar el modal si lo deseas
+      closeModal();
+    } catch (error) {
+      console.error('Error al agregar la canción', error);
+    }
+  };
+  
+  
+
+  /*const handleAddSong = async (files) => {
     try {
       const formData = new FormData();
       formData.append('song', files[0]);
@@ -114,6 +147,7 @@ function App() {
       console.error('Error al agregar la canción', error);
     }
   };
+  */
   
 
   return (
@@ -167,7 +201,7 @@ function App() {
                 &times;
               </span>
               <label htmlFor='fileInput'>
-                Subir
+                Subir MP3
                 <input
                   id='fileInput'
                   type='file'
@@ -176,18 +210,30 @@ function App() {
                   style={{ display: 'none' }}
                 />
               </label>
-              <input type='text' placeholder='Nombre de la canción' />
-              <input type='text' placeholder='Artista' />
-              <label htmlFor='fileInput'>
+              <input
+                type='text'
+                placeholder='Nombre de la canción'
+                value={newSongInfo.name}
+                onChange={(e) => setNewSongInfo((prevInfo) => ({ ...prevInfo, name: e.target.value }))}
+              />
+              <input
+                type='text'
+                placeholder='Artista'
+                value={newSongInfo.artist}
+                onChange={(e) => setNewSongInfo((prevInfo) => ({ ...prevInfo, artist: e.target.value }))}
+              />
+              <label htmlFor='fileInput2'>
                 Subir carátula
                 <input
-                  id='fileInput'
+                  id='fileInput2'
                   type='file'
-                  accept='image/*'
+                  accept='.jpg, .jpeg, .png'
                   onChange={(e) => handleAddSong(e.target.files)}
                   style={{ display: 'none' }}
                 />
               </label>
+              <br/>
+              <button id='BotonSubir' onClick={handleAddSongToServer}>Agregar canción</button>
             </div>
           </div>
         )}

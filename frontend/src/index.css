@@ -102,3 +102,16 @@ img{
   justify-content: center;
   align-items: center;
 }
+
+#BotonSubir{
+  background-color: #4CB963;
+  color: #F7F9F9;
+  border-radius: 20px;
+  width: 75px;
+  height: 40px;
+  font-size: 15px;
+  font-family:Arial, Helvetica, sans-serif;
+  border: 2.5px solid #F7F9F9;
+  margin-top: 20px;
+  margin-bottom: 13px;
+}
