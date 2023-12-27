@@ -31,12 +31,14 @@ body, html, #Root {
   align-items: center;
 }
 #BotonesPlay{
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   margin-top: 20px;
 }
 .Div_botones{
+  cursor: pointer;
   display: flex;
   align-items: center;
   margin-right: 20px;
@@ -49,6 +51,7 @@ body, html, #Root {
 }
 
 #Boton_agregar{
+  cursor: pointer;
   background-color: #4CB963;
   color: #F7F9F9;
   border-radius: 20px;
@@ -104,6 +107,7 @@ img{
 }
 
 #BotonSubir{
+  cursor:pointer;
   background-color: #4CB963;
   color: #F7F9F9;
   border-radius: 20px;

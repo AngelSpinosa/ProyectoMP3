@@ -38,7 +38,5 @@ public class App {
             respuesta.addProperty("msj", success);
             return respuesta;
         });
-
-        // ... (agregar más rutas según sea necesario)
     }
 }

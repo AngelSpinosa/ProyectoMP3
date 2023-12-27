@@ -39,7 +39,7 @@ function App() {
 
   const loadSongs = async () => {
     try {
-      const response = await axios.get('http://localhost:4567/canciones');
+      const response = await axios.get('http://localhost:3306/canciones');
       setSongs(response.data);
       if (response.data.length > 0) {
         setSelectedSong(response.data[0]);
@@ -118,7 +118,7 @@ function App() {
       formData.append('audio', newSongInfo.audioFile);
       formData.append('coverImage', newSongInfo.coverImage);
   
-      await axios.post('http://localhost:4567/canciones', formData);
+      await axios.post('http://localhost:3306/canciones', formData);
   
       // Después de agregar la canción, puedes recargar la lista de canciones
       loadSongs();

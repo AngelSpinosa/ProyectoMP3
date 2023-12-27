@@ -10,7 +10,7 @@ public class Conexion {
     private static String url = "jdbc:mysql://localhost:3306/MP3";
     private static String driverName = "com.mysql.cj.jdbc.Driver"; 
     private static String username = "root";
-    private static String password = "Perro16tonto";
+    private static String password = "1157";
     private static Connection connection = null;
 
     public static Connection getConnection() {
