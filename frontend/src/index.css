@@ -1,6 +1,16 @@
 body, html, #Root {
   margin: 0;
 }
+label{
+  margin: 7px;
+}
+input{
+  margin: 7px;
+}
+button{
+  margin: 7px;
+  box-shadow: none;
+}
 
 #Root {
   display: flex;
@@ -8,7 +18,7 @@ body, html, #Root {
   justify-content: center;
 }
 .Div_padre{
-  background-color:#5E548C ;
+  background-color:#284B63 ;
   width: 200hv;
   min-height: 100vh;
   display: flex;
@@ -31,6 +41,11 @@ body, html, #Root {
   align-items: center;
 }
 #BotonesPlay{
+  background-color: transparent;
+  border-radius: 15px;
+  width: 350px;
+  height: 150;
+  font-size: 22px;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -52,16 +67,29 @@ body, html, #Root {
 
 #Boton_agregar{
   cursor: pointer;
-  background-color: #4CB963;
-  color: #F7F9F9;
+  background-color: #D9D9D9;
+  color: #353535;
   border-radius: 20px;
   width: 130px;
   height: 50px;
-  font-size: 20px;
+  font-size: 22px;
   font-family:Arial, Helvetica, sans-serif;
-  border: 2.5px solid #000000; /* Añade un borde de 2px de ancho y color negro */  margin-top: 20px;
-  margin-bottom: 13px;
 }
+
+#Boton_login{
+  cursor: pointer;
+  background-color: #D9D9D9;
+  color: #353535;
+  border-radius: 20px;
+  width: 130px;
+  height: 50px;
+  font-size: 18px;
+  font-family:Arial, Helvetica, sans-serif;
+  margin-top: 20px;
+  margin-bottom: 19px;
+  margin-left: 5px;
+}
+
 
 img{
   width: 30%;
@@ -71,7 +99,7 @@ img{
 }
 
 .Modal {
-  display: flex;
+  display:flex;
   position: fixed;
   top: 0;
   left: 0;
@@ -83,12 +111,11 @@ img{
 }
 
 .Modal-content {
-  border: 2.5px solid #000000; /* Añade un borde de 2px de ancho y color negro */  margin-top: 20px;
-  color: #F7F9F9;
+  color: #D9D9D9;
   font-family: Arial, Helvetica, sans-serif;
-  background-color: #4CB963;
+  background-color: #284B63;
   padding: 20px;
-  border-radius: 10px;
+  border-radius: 8px;
 }
 
 .Close {
@@ -102,20 +129,22 @@ img{
 #Opciones {
   padding-top: -10px;
   display: flex;
+  
   justify-content: center;
   align-items: center;
+  margin-top: 20px; /* Añadido margen superior para separar del borde superior del modal */
 }
 
 #BotonSubir{
   cursor:pointer;
-  background-color: #4CB963;
-  color: #F7F9F9;
-  border-radius: 20px;
+  background-color: #D9D9D9;
+  color: #284B63;
+  border-radius: 15px;
   width: 75px;
   height: 40px;
   font-size: 15px;
   font-family:Arial, Helvetica, sans-serif;
-  border: 2.5px solid #F7F9F9;
-  margin-top: 20px;
+  margin-top: 20px; /* Ajustado el margen superior */
   margin-bottom: 13px;
+  box-shadow: none;
 }

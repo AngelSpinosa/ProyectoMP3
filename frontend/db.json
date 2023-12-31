@@ -1,0 +1,26 @@
+{
+  "frontend": [
+    {
+      "id": 1,
+      "nombre": "POWER",
+      "artista": "Kanye West",
+      "archivo": "/frontend/images/POWER.mp3",
+      "caratula": "/images/My Beautiful Dark Twisted Fantasy.jpg"
+    },
+    {
+        "id": 3,
+        "nombre": "Blue World",
+        "artista": "Mac Miller",
+        "archivo": "/frontend/images/Blue World.mp3",
+        "caratula": "/images/Circles.jpg"
+      },
+    {
+      "id": 2,
+      "nombre": "The Great Gig in the Sky",
+      "artista": "Pink Floyd",
+      "archivo": "/frontend/images/Blue World.mp3",
+      "caratula": "/images/TDSOTM.jpg"
+    }
+    
+  ]
+}

@@ -1,6 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import './App.css';
+
+
 
 function App() {
   const [showModal, setShowModal] = useState(false);
@@ -13,24 +15,27 @@ function App() {
     audioFile: null,
     coverImage: null,
   });
+  
+  const audioPlayerRef = useRef(null); 
+  
 
   useEffect(() => {
-    const audioPlayer = document.getElementById('audioPlayer');
 
     const updateProgress = () => {
-      if (audioPlayer) {
-        const newProgress = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+      if (audioPlayerRef.current) {  // Asegúrate de acceder a current
+        const newProgress = (audioPlayerRef.current.currentTime / audioPlayerRef.current.duration) * 100;
         setProgress(newProgress);
       }
     };
-
-    if (audioPlayer) {
-      audioPlayer.addEventListener('timeupdate', updateProgress);
-
+    
+    if (audioPlayerRef.current) {  // Asegúrate de acceder a current
+      audioPlayerRef.current.addEventListener('timeupdate', updateProgress);
+    
       return () => {
-        audioPlayer.removeEventListener('timeupdate', updateProgress);
+        audioPlayerRef.current.removeEventListener('timeupdate', updateProgress);
       };
     }
+    
   }, [selectedSong]);
 
   useEffect(() => {
@@ -39,10 +44,18 @@ function App() {
 
   const loadSongs = async () => {
     try {
-      const response = await axios.get('http://localhost:3306/canciones');
-      setSongs(response.data);
-      if (response.data.length > 0) {
-        setSelectedSong(response.data[0]);
+      const response = await axios.get('http://localhost:3001/frontend');
+      const songsWithCorrectPaths = response.data.map(song => ({
+        ...song,
+        filePath: `${song.nombre}.mp3`,
+        cover: `${song.caratula}`
+      }));
+      
+      
+      
+      setSongs(songsWithCorrectPaths);
+      if (songsWithCorrectPaths.length > 0) {
+        setSelectedSong(songsWithCorrectPaths[0]);
       }
     } catch (error) {
       console.error('Error al cargar la lista de canciones', error);
@@ -58,52 +71,65 @@ function App() {
   };
 
   const handlePlayPause = () => {
-    const audioPlayer = document.getElementById('audioPlayer');
-    if (audioPlayer.paused) {
-      audioPlayer.play();
-    } else {
-      audioPlayer.pause();
+    const audioPlayer = audioPlayerRef.current;
+    if (audioPlayer) {
+      if (audioPlayer.paused) {
+        audioPlayer.play().catch(error => console.error('Error al reproducir:', error));
+      } else {
+        audioPlayer.pause();
+      }
     }
   };
 
+  const changeSong = (newSongId) => {
+    const newSong = songs.find(song => song.id === newSongId);
+    if (newSong) {
+      setSelectedSong(newSong);
+      // También puedes reiniciar el progreso u otras configuraciones aquí si es necesario
+    }
+  };
+   
+
   const handleNext = () => {
-    const currentIndex = songs.findIndex(song => song.filePath === selectedSong.filePath);
-  
+    const currentIndex = songs.findIndex(song => song.id === selectedSong.id);
     if (currentIndex !== -1 && currentIndex < songs.length - 1) {
       const nextSong = songs[currentIndex + 1];
-      setSelectedSong(nextSong);
+      changeSong(nextSong.id);
     } else if (songs.length > 0) {
       // Si estás al final de la lista, vuelve a la primera canción
-      setSelectedSong(songs[0]);
+      const firstSong = songs[0];
+      changeSong(firstSong.id);
     }
   };
   
 
   const handlePrev = () => {
-    const currentIndex = songs.findIndex(song => song.filePath === selectedSong.filePath);
-  
+    const currentIndex = songs.findIndex(song => song.id === selectedSong.id);
     if (currentIndex !== -1 && currentIndex > 0) {
       const prevSong = songs[currentIndex - 1];
-      setSelectedSong(prevSong);
+      changeSong(prevSong.id);
     } else if (songs.length > 0) {
       // Si estás al principio de la lista, ve a la última canción
-      setSelectedSong(songs[songs.length - 1]);
+      const lastSong = songs[songs.length - 1];
+      changeSong(lastSong.id);
     }
   };
   
 
   const handleProgressBarChange = (e) => {
     const progressBar = e.target;
-    const newTime = (selectedSong.duration / 100) * progressBar.value;
+    const newTime = (audioPlayerRef.current.duration / 100) * progressBar.value;
   
-    // Actualiza la posición de reproducción de la canción
-    selectedSong.audio.currentTime = newTime;
+    if (!isNaN(newTime) && isFinite(newTime)) {  // Asegúrate de que newTime sea un valor finito y no NaN
+      audioPlayerRef.current.currentTime = newTime;
   
-    // Además, si la canción no está reproduciendo, puedes iniciar la reproducción
-    if (selectedSong.audio.paused) {
-      selectedSong.audio.play();
+      if (audioPlayerRef.current.paused) {
+        audioPlayerRef.current.play().catch(error => console.error('Error al reproducir:', error));
+      }
     }
   };
+  
+  
 
   const handleAddSong = (files) => {
     const audioFile = files[0];
@@ -118,7 +144,7 @@ function App() {
       formData.append('audio', newSongInfo.audioFile);
       formData.append('coverImage', newSongInfo.coverImage);
   
-      await axios.post('http://localhost:3306/canciones', formData);
+      await axios.post('http://localhost:3001/frontend', formData);
   
       // Después de agregar la canción, puedes recargar la lista de canciones
       loadSongs();
@@ -158,6 +184,9 @@ function App() {
           <button id='Boton_agregar' onClick={openModal}>
             Agregar
           </button>
+          <button id='Boton_login'>
+            Iniciar Sesión
+          </button>
         </div>
 
         {selectedSong && (
@@ -167,18 +196,26 @@ function App() {
               <h2>{selectedSong.title}</h2>
               <p>{selectedSong.artist}</p>
               <progress
-                value={progress}  // Utiliza el estado progress para reflejar el progreso
+                value={isNaN(progress) ? 0 : progress}  // Asegúrate de que progress sea un número válido
                 max="100"
                 onClick={handleProgressBarChange}
               />
-              <audio
-                id='AudioPlayer'
-                onTimeUpdate={(e) => setProgress((e.target.currentTime / e.target.duration) * 100)}
-                onEnded={handleNext}  // Invoca handleNext cuando la canción actual ha terminado
-              >
-                <source src={selectedSong.filePath} type="audio/mp3" />
-                Tu navegador no soporta el elemento de audio.
-              </audio>
+            <audio
+              autoPlay
+              ref={audioPlayerRef}
+              onLoadedMetadata={(e) => {
+                setTimeout(() => {
+                  e.target.play().catch(error => console.error('Error al reproducir:', error));
+                }, 100);
+              }}
+              onTimeUpdate={(e) => setProgress((e.target.currentTime / e.target.duration) * 100)}
+              onEnded={handleNext}
+            >
+              <source src={selectedSong.filePath} type="audio/mp3" />
+              Tu navegador no soporta el elemento de audio.
+            </audio>
+
+
             </div>
             <div id='BotonesPlay' className='Div_botones'>
               <button onClick={handlePrev} className='Botones_AS'>
@@ -211,12 +248,14 @@ function App() {
                 />
               </label>
               <input
+                id='NombreCancion'
                 type='text'
                 placeholder='Nombre de la canción'
                 value={newSongInfo.name}
                 onChange={(e) => setNewSongInfo((prevInfo) => ({ ...prevInfo, name: e.target.value }))}
               />
               <input
+                
                 type='text'
                 placeholder='Artista'
                 value={newSongInfo.artist}
@@ -232,7 +271,7 @@ function App() {
                   style={{ display: 'none' }}
                 />
               </label>
-              <br/>
+              
               <button id='BotonSubir' onClick={handleAddSongToServer}>Agregar canción</button>
             </div>
           </div>

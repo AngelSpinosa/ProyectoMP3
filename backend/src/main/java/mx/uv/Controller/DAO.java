@@ -59,6 +59,4 @@ public class DAO {
         }
         return false;
     }
-
-    // Otros métodos según sea necesario...
 }
